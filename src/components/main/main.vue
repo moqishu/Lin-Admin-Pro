@@ -17,13 +17,13 @@
                     <img v-if="isCollapsed" src="../../assets/main/logo-small.png" alt="">
                 </div>
                 <Menu
+                    ref="side_menu"
                     :active-name="activeName"
                     :theme="themeType"
                     width="auto"
                     :class="menuitemClasses"
                     :open-names="openNames"
                     accordion
-                    ref="side_menu"
                     @on-select="menuNav"
                     @on-open-change="open"
                 >
@@ -205,37 +205,32 @@
             ...mapGetters([
                 'routes',
             ]),
+            // 导航收缩
+            menuitemClasses() {
+                return [ 'menu-item', this.isCollapsed ? 'collapsed-menu' : '']
+            },
             // 获取vuex 路由数据 用户tag多页签
             getRouterArrVuex() {
                 return this.$store.getters.routerArr
             },
             // 收缩的图标
             rotateIcon() {
-                return [
-                    'menu-icon',
-                    this.isCollapsed ? 'rotate-icon' : ''
-                ];
-            },
-            // 导航收缩
-            menuitemClasses() {
-                return [
-                    'menu-item',
-                    this.isCollapsed ? 'collapsed-menu' : ''
-                ]
+                return [ 'menu-icon', this.isCollapsed ? 'rotate-icon' : '']
             }
         },
         data() {
             return {
-                activeName: "", // 子导航选中的name
                 isCollapsed: false, // 是否收缩
+                themeType: themeData.themeType ? themeData.themeType : 'dark', // 主题风格
+                activeName: "", // 子导航选中的name
                 isMaxWindow: false, // 是否最大化窗口
+                menuList:[], // 菜单列表
                 routersArr: [], // 路由数据
                 openNames: [], // 导航打开的父栏目
                 transform: 0, // 导航左右方向移动距离
                 tabSwitch: false, // 是否显示左右切换图标
                 userData: {}, // 登录用户数据
                 optionDrawer: false, // 是否显示配置抽屉
-                themeType: themeData.themeType ? themeData.themeType : 'dark', // 主题风格
                 logoImg: themeData.themeType === 'dark' ? lightImg : darkImg, // 主题logo图片
                 isTabsShow: themeData.isTabsShow, // 是否显示多页签
                 headMaxWidthLogoImg: darkImg, // 栏目是否通顶logo图片
